@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProteinVend — Fuel Anywhere</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lime: #C8F135;
+  --lime-dark: #9dc220;
+  --dark: #0D0D0D;
+  --dark2: #1A1A1A;
+  --dark3: #242424;
+  --surface: #F7F7F3;
+  --surface2: #EDEDE8;
+  --text: #0D0D0D;
+  --muted: #888;
+  --border: rgba(0,0,0,0.08);
+  --white: #ffffff;
+  --red: #FF4444;
+  --blue: #35C8F1;
+  --orange: #F19535;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { width:100%; height:100%; background:#EDEDE8; font-family:'DM Sans',sans-serif; overflow:hidden; }
+
+/* ── APP SHELL ── */
+#app {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  background: #EDEDE8;
+}
+.phone-shell {
+  width:390px; height:844px;
+  border-radius:50px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.08);
+  overflow:hidden;
+  position:relative;
+  background:#fff;
+  flex-shrink:0;
+}
+@media (max-height: 900px) {
+  .phone-shell { transform: scale(0.92); transform-origin: center; }
+}
+@media (max-height: 800px) {
+  .phone-shell { transform: scale(0.82); transform-origin: center; }
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 14px 24px 6px;
+  font-size:12px; font-weight:500;
+  position:relative; z-index:10;
+}
+.status-bar.dark { background:#0D0D0D; color:rgba(255,255,255,0.7); }
+.status-bar.light { background:transparent; color:#0D0D0D; }
+.status-bar.surface { background:#F7F7F3; color:#0D0D0D; }
+
+/* ── SCREENS ── */
+.screen { display:none; width:100%; height:100%; flex-direction:column; overflow:hidden; }
+.screen.active { display:flex; }
+
+/* scrollable body */
+.scroll-body { flex:1; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth; }
+.scroll-body::-webkit-scrollbar { display:none; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  display:flex; justify-content:space-around; align-items:center;
+  padding: 10px 0 24px;
+  background:#fff;
+  border-top: 1px solid var(--border);
+  flex-shrink:0;
+}
+.nav-item { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; opacity:0.45; transition:opacity 0.2s; }
+.nav-item.active { opacity:1; }
+.nav-item svg { width:22px; height:22px; }
+.nav-label { font-size:10px; font-weight:500; font-family:'Syne',sans-serif; }
+.nav-dot { width:4px; height:4px; border-radius:50%; background:var(--lime); display:none; margin-top:-2px; }
+.nav-item.active .nav-dot { display:block; }
+
+/* ── TYPOGRAPHY ── */
+.syne { font-family:'Syne',sans-serif; }
+h1 { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; line-height:1.1; }
+h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; }
+h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background:var(--lime); color:var(--dark);
+  font-family:'Syne',sans-serif; font-weight:700; font-size:15px;
+  border:none; border-radius:100px; padding:16px 32px;
+  cursor:pointer; width:100%; letter-spacing:0.02em;
+  transition: transform 0.1s, background 0.2s;
+}
+.btn-primary:active { transform:scale(0.97); }
+.btn-dark {
+  background:var(--dark); color:#fff;
+  font-family:'Syne',sans-serif; font-weight:700; font-size:15px;
+  border:none; border-radius:100px; padding:16px 32px;
+  cursor:pointer; width:100%;
+  transition: transform 0.1s;
+}
+.btn-dark:active { transform:scale(0.97); }
+.btn-ghost {
+  background:transparent; color:var(--dark);
+  font-family:'Syne',sans-serif; font-weight:600; font-size:14px;
+  border: 1.5px solid rgba(0,0,0,0.15); border-radius:100px; padding:13px 24px;
+  cursor:pointer;
+  transition: transform 0.1s, border-color 0.2s;
+}
+.btn-ghost:active { transform:scale(0.97); }
+
+/* ── INPUTS ── */
+.input-group { margin-bottom:16px; }
+.input-label { font-size:12px; font-weight:500; color:var(--muted); margin-bottom:6px; letter-spacing:0.06em; text-transform:uppercase; }
+.input-field {
+  width:100%; padding:14px 16px;
+  background:var(--surface); border:1.5px solid transparent;
+  border-radius:14px; font-size:15px; font-family:'DM Sans',sans-serif;
+  color:var(--dark); outline:none;
+  transition: border-color 0.2s;
+}
+.input-field:focus { border-color:var(--lime); }
+
+/* ── PILL / BADGE ── */
+.pill {
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+  border-radius:100px; padding:4px 10px;
+}
+.pill-lime { background:var(--dark); color:var(--lime); }
+.pill-green { background:#e6ffc0; color:#3a6600; }
+.pill-red { background:#ffe0e0; color:#aa2222; }
+.pill-orange { background:#fff3e0; color:#8a4400; }
+.pill-blue { background:#e0f7ff; color:#005c8a; }
+
+/* ── CARD ── */
+.card {
+  background:#fff; border-radius:20px;
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+
+/* ════════════════════════════════
+   SCREEN 1: LOGIN
+════════════════════════════════ */
+#screen-login {
+  background: #0D0D0D;
+}
+.login-bg-blob {
+  position:absolute; border-radius:50%;
+  filter:blur(60px); pointer-events:none;
+}
+.login-art {
+  position:relative; flex:1;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.login-form-area {
+  background:#fff; border-radius:32px 32px 0 0;
+  padding:32px 28px 48px;
+  flex-shrink:0;
+}
+.login-logo {
+  font-family:'Syne',sans-serif; font-weight:800; font-size:28px;
+  color:#fff; text-align:center; margin-bottom:4px;
+}
+.login-logo span { color:var(--lime); }
+.login-tagline { color:rgba(255,255,255,0.45); font-size:13px; text-align:center; }
+.divider { display:flex; align-items:center; gap:12px; margin:20px 0; }
+.divider-line { flex:1; height:1px; background:var(--border); }
+.divider-text { font-size:12px; color:var(--muted); }
+.social-btn {
+  width:100%; padding:13px; border:1.5px solid var(--border);
+  border-radius:14px; background:#fff; font-family:'DM Sans',sans-serif;
+  font-size:14px; font-weight:500; cursor:pointer; display:flex;
+  align-items:center; justify-content:center; gap:8px;
+  transition: background 0.15s;
+}
+.social-btn:active { background:var(--surface); }
+
+/* ════════════════════════════════
+   SCREEN 2: HOME
+════════════════════════════════ */
+#screen-home { background:var(--surface); }
+.home-header {
+  background:var(--dark); padding:0 20px 28px;
+  border-radius:0 0 28px 28px;
+  position:relative; overflow:hidden;
+}
+.home-header-glow {
+  position:absolute; width:160px; height:160px;
+  background:var(--lime); border-radius:50%;
+  filter:blur(60px); opacity:0.2;
+  top:-40px; right:-20px; pointer-events:none;
+}
+.header-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+.greeting-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#fff; }
+.greeting-name span { color:var(--lime); }
+.greeting-sub { font-size:13px; color:rgba(255,255,255,0.45); margin-top:2px; }
+.notif-btn {
+  width:40px; height:40px; border-radius:50%;
+  background:rgba(255,255,255,0.08); border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;
+}
+.search-box {
+  background:rgba(255,255,255,0.1); border-radius:14px;
+  display:flex; align-items:center; gap:10px; padding:12px 16px;
+}
+.search-box span { font-size:14px; color:rgba(255,255,255,0.35); }
+.search-box-icon { color:rgba(255,255,255,0.5); font-size:16px; }
+
+/* stats strip */
+.stats-strip { display:flex; gap:10px; padding:16px 20px 0; }
+.stat-card {
+  flex:1; background:#fff; border-radius:16px;
+  padding:14px 12px; border:1px solid var(--border);
+  text-align:center;
+}
+.stat-num { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--dark); }
+.stat-label { font-size:11px; color:var(--muted); margin-top:2px; }
+
+.section-header { display:flex; justify-content:space-between; align-items:center; padding:20px 20px 10px; }
+.section-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--dark); }
+.see-all { font-size:13px; color:var(--lime-dark); font-weight:600; cursor:pointer; }
+
+/* featured row */
+.feat-scroll { display:flex; gap:12px; padding:0 20px 4px; overflow-x:auto; scrollbar-width:none; }
+.feat-scroll::-webkit-scrollbar { display:none; }
+.feat-card {
+  min-width:160px; height:110px; border-radius:20px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:12px; position:relative; overflow:hidden; cursor:pointer;
+  flex-shrink:0;
+}
+.feat-card-accent { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; opacity:0.4; }
+.feat-card-name { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#fff; line-height:1.3; }
+.feat-card-sub { font-size:11px; color:rgba(255,255,255,0.55); margin-top:2px; }
+.feat-card-badge {
+  position:absolute; top:10px; left:10px;
+  background:var(--lime); color:var(--dark);
+  font-family:'Syne',sans-serif; font-size:9px; font-weight:700;
+  border-radius:100px; padding:3px 8px;
+}
+
+/* machine card */
+.machine-card {
+  margin:0 20px 12px; background:#fff; border-radius:20px;
+  border:1px solid var(--border); padding:16px; cursor:pointer;
+  display:flex; align-items:center; gap:14px;
+  transition: transform 0.15s;
+}
+.machine-card:active { transform:scale(0.98); }
+.machine-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; flex-shrink:0;
+}
+.machine-info { flex:1; }
+.machine-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--dark); }
+.machine-meta { font-size:12px; color:var(--muted); margin-top:3px; }
+.machine-status { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; border-radius:100px; padding:5px 12px; }
+
+/* ════════════════════════════════
+   SCREEN 3: MACHINE / VEND
+════════════════════════════════ */
+#screen-machine { background:var(--surface); }
+.machine-header {
+  background:var(--dark); padding:0 20px 24px;
+  border-radius:0 0 28px 28px; position:relative; overflow:hidden;
+}
+.back-btn {
+  width:36px; height:36px; background:rgba(255,255,255,0.1);
+  border-radius:50%; border:none; cursor:pointer; color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.machine-top-row { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.machine-hdr-name { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:#fff; }
+.machine-hdr-meta { font-size:12px; color:rgba(255,255,255,0.45); margin-top:2px; }
+
+/* vending machine pictorial */
+.vend-machine-wrap { padding:0 20px 0; }
+.vend-machine-visual {
+  background:var(--dark3); border-radius:24px;
+  padding:16px; margin-bottom:16px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.vend-machine-title { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:0.1em; margin-bottom:12px; text-align:center; }
+.vend-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.vend-slot {
+  background:rgba(255,255,255,0.06); border-radius:12px;
+  padding:8px 6px; text-align:center; cursor:pointer;
+  border:1.5px solid transparent;
+  transition: border-color 0.2s, background 0.2s;
+  position:relative;
+}
+.vend-slot:hover { background:rgba(255,255,255,0.1); }
+.vend-slot.selected { border-color:var(--lime); background:rgba(200,241,53,0.12); }
+.vend-slot.empty { opacity:0.3; cursor:not-allowed; }
+.vend-slot-icon { font-size:22px; margin-bottom:4px; }
+.vend-slot-name { font-size:8px; font-weight:600; color:rgba(255,255,255,0.7); line-height:1.2; font-family:'Syne',sans-serif; }
+.vend-slot-price { font-size:9px; color:var(--lime); font-weight:700; font-family:'Syne',sans-serif; margin-top:2px; }
+.vend-slot-qty {
+  position:absolute; top:4px; right:4px;
+  width:14px; height:14px; border-radius:50%;
+  background:var(--lime); color:var(--dark);
+  font-size:8px; font-weight:800; display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif;
+}
+.vend-slot-out {
+  position:absolute; inset:0; background:rgba(0,0,0,0.5);
+  border-radius:11px; display:flex; align-items:center; justify-content:center;
+  font-size:8px; color:#ff6666; font-weight:700; font-family:'Syne',sans-serif;
+}
+
+/* product detail panel */
+.product-panel {
+  background:#fff; border-radius:24px; padding:16px;
+  border:1px solid var(--border); margin-bottom:16px;
+}
+.product-panel-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
+.product-panel-icon { font-size:44px; }
+.product-panel-info { flex:1; }
+.product-panel-name { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--dark); }
+.product-panel-sub { font-size:13px; color:var(--muted); margin-top:2px; }
+.product-panel-price { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--dark); }
+.macro-row { display:flex; gap:8px; margin-bottom:12px; }
+.macro-chip {
+  flex:1; background:var(--surface); border-radius:12px; padding:8px;
+  text-align:center;
+}
+.macro-val { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--dark); }
+.macro-label { font-size:10px; color:var(--muted); margin-top:1px; }
+.qty-row { display:flex; align-items:center; gap:16px; }
+.qty-btn {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--surface); border:none; cursor:pointer;
+  font-size:20px; font-weight:300; display:flex; align-items:center; justify-content:center;
+  transition: background 0.15s;
+}
+.qty-btn:active { background:var(--lime); }
+.qty-num { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--dark); min-width:24px; text-align:center; }
+
+/* ════════════════════════════════
+   SCREEN 4: BUNDLE / DISCOUNTS
+════════════════════════════════ */
+#screen-bundles { background:var(--surface); }
+.bundle-hero {
+  background:var(--dark); padding:20px 20px 28px;
+  border-radius:0 0 28px 28px; position:relative; overflow:hidden;
+}
+.bundle-hero-glow {
+  position:absolute; width:200px; height:200px; border-radius:50%;
+  filter:blur(70px); opacity:0.15; pointer-events:none;
+  background:var(--lime); top:-60px; right:-40px;
+}
+.discount-badge-big {
+  display:inline-block;
+  background:var(--lime); color:var(--dark);
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:800;
+  border-radius:100px; padding:6px 16px; margin-bottom:12px;
+}
+.bundle-card {
+  background:#fff; border-radius:20px; padding:20px;
+  border:1px solid var(--border); margin:0 20px 14px; cursor:pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.bundle-card:active { transform:scale(0.98); }
+.bundle-card.featured {
+  border-color:var(--lime); background:linear-gradient(135deg,#f9ffe6,#fff);
+}
+.bundle-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.bundle-name { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; color:var(--dark); }
+.bundle-save { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#3a6600; background:#e6ffc0; border-radius:100px; padding:4px 12px; }
+.bundle-items { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.bundle-item-chip {
+  background:var(--surface); border-radius:100px; padding:6px 12px;
+  font-size:12px; display:flex; align-items:center; gap:6px;
+}
+.bundle-price-row { display:flex; align-items:baseline; gap:10px; }
+.bundle-price-new { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; color:var(--dark); }
+.bundle-price-old { font-size:14px; color:var(--muted); text-decoration:line-through; }
+.bundle-add-btn {
+  background:var(--dark); color:#fff;
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+  border:none; border-radius:100px; padding:10px 20px; cursor:pointer; margin-left:auto;
+  transition: background 0.2s;
+}
+.bundle-add-btn:hover { background:var(--lime); color:var(--dark); }
+
+/* promo banner */
+.promo-banner {
+  margin:0 20px 14px; border-radius:20px;
+  background:var(--dark); padding:20px;
+  display:flex; align-items:center; gap:16px; overflow:hidden; position:relative;
+}
+.promo-glow { position:absolute; width:120px; height:120px; background:var(--lime); border-radius:50%; filter:blur(40px); opacity:0.15; right:-20px; top:-20px; }
+.promo-icon { font-size:36px; }
+.promo-text { flex:1; }
+.promo-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:#fff; }
+.promo-sub { font-size:12px; color:rgba(255,255,255,0.45); margin-top:3px; }
+
+/* ════════════════════════════════
+   SCREEN 5: SHAKE BUILDER
+════════════════════════════════ */
+#screen-shake { background:var(--surface); }
+.shake-header {
+  background:var(--dark); padding:0 20px 28px;
+  border-radius:0 0 28px 28px; position:relative; overflow:hidden;
+}
+.shake-hero-glow { position:absolute; width:180px; height:180px; background:#35C8F1; border-radius:50%; filter:blur(70px); opacity:0.15; top:-40px; right:-30px; pointer-events:none; }
+
+.builder-step {
+  background:#fff; border-radius:20px; border:1px solid var(--border);
+  margin:0 20px 14px; padding:18px;
+}
+.step-num {
+  width:28px; height:28px; border-radius:50%; background:var(--dark);
+  color:var(--lime); font-family:'Syne',sans-serif; font-size:13px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+}
+.step-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--dark); margin-bottom:12px; }
+.option-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.option-chip {
+  border:1.5px solid var(--border); border-radius:100px; padding:8px 16px;
+  font-size:13px; font-weight:500; cursor:pointer; background:#fff;
+  transition: border-color 0.2s, background 0.2s;
+  display:flex; align-items:center; gap:6px;
+}
+.option-chip.selected { border-color:var(--dark); background:var(--dark); color:#fff; }
+.option-chip.selected .chip-icon { filter:none; }
+.chip-icon { font-size:16px; }
+
+.shake-summary {
+  background:var(--dark); border-radius:20px; margin:0 20px 14px; padding:20px;
+  position:relative; overflow:hidden;
+}
+.shake-summary-glow { position:absolute; width:120px; height:120px; background:var(--lime); border-radius:50%; filter:blur(40px); opacity:0.12; bottom:-20px; right:-20px; pointer-events:none; }
+.shake-macro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+.shake-macro {
+  background:rgba(255,255,255,0.06); border-radius:12px; padding:10px;
+  text-align:center;
+}
+.shake-macro-val { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--lime); }
+.shake-macro-label { font-size:10px; color:rgba(255,255,255,0.45); margin-top:2px; }
+
+/* ════════════════════════════════
+   SCREEN 6: ORDER TRACKING
+════════════════════════════════ */
+#screen-order { background:var(--surface); }
+.order-header {
+  background:var(--dark); padding:0 20px 28px;
+  border-radius:0 0 28px 28px; position:relative; overflow:hidden;
+}
+.order-hero-glow { position:absolute; width:180px; height:180px; background:var(--lime); border-radius:50%; filter:blur(70px); opacity:0.15; top:-40px; left:-30px; pointer-events:none; }
+
+/* timer circle */
+.timer-wrap { display:flex; flex-direction:column; align-items:center; padding:24px 20px 12px; }
+.timer-ring-outer {
+  width:180px; height:180px; position:relative;
+  display:flex; align-items:center; justify-content:center;
+}
+.timer-ring-svg { position:absolute; inset:0; transform:rotate(-90deg); }
+.timer-circle-bg { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:8; }
+.timer-circle-prog { fill:none; stroke:var(--lime); stroke-width:8; stroke-linecap:round;
+  stroke-dasharray:502; stroke-dashoffset:126; transition:stroke-dashoffset 1s linear; }
+.timer-inner { text-align:center; }
+.timer-num { font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:#fff; line-height:1; }
+.timer-label { font-size:12px; color:rgba(255,255,255,0.45); margin-top:4px; letter-spacing:0.08em; }
+
+/* steps tracker */
+.order-steps { padding:0 20px; margin-bottom:16px; }
+.order-step { display:flex; align-items:flex-start; gap:14px; position:relative; padding-bottom:20px; }
+.order-step:last-child { padding-bottom:0; }
+.order-step::after { content:''; position:absolute; left:17px; top:36px; width:2px; height:calc(100% - 16px); background:var(--border); }
+.order-step:last-child::after { display:none; }
+.step-dot {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+  position:relative; z-index:1;
+}
+.step-dot.done { background:var(--lime); }
+.step-dot.active { background:var(--dark); border:2px solid var(--lime); animation:pulse-step 1.5s infinite; }
+.step-dot.pending { background:var(--surface2); }
+@keyframes pulse-step { 0%,100%{box-shadow:0 0 0 0 rgba(200,241,53,0.4);} 50%{box-shadow:0 0 0 8px rgba(200,241,53,0);} }
+.step-info { padding-top:6px; }
+.step-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--dark); }
+.step-desc { font-size:12px; color:var(--muted); margin-top:2px; }
+.step-time { font-size:11px; color:var(--lime-dark); margin-top:2px; font-weight:600; }
+
+/* ready card */
+.ready-card {
+  margin:0 20px; background:var(--dark); border-radius:24px; padding:24px;
+  text-align:center; position:relative; overflow:hidden;
+}
+.ready-glow { position:absolute; width:200px; height:200px; background:var(--lime); border-radius:50%; filter:blur(80px); opacity:0.15; top:-60px; left:50%; transform:translateX(-50%); pointer-events:none; }
+.ready-icon { font-size:56px; margin-bottom:12px; }
+.ready-title { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; color:#fff; }
+.ready-sub { font-size:13px; color:rgba(255,255,255,0.45); margin-top:6px; line-height:1.6; }
+.ready-code {
+  background:rgba(200,241,53,0.12); border:1.5px solid rgba(200,241,53,0.3);
+  border-radius:14px; padding:14px; margin:16px 0;
+  font-family:'Syne',sans-serif; font-size:32px; font-weight:800;
+  color:var(--lime); letter-spacing:0.15em;
+}
+
+/* ════════════════════════════════
+   SCREEN 7: CART
+════════════════════════════════ */
+#screen-cart { background:var(--surface); }
+.cart-header {
+  background:#fff; padding:0 20px 16px;
+  border-bottom:1px solid var(--border);
+}
+.cart-item {
+  background:#fff; border-radius:16px; border:1px solid var(--border);
+  margin:0 20px 10px; padding:14px; display:flex; align-items:center; gap:14px;
+}
+.cart-item-icon { font-size:32px; }
+.cart-item-info { flex:1; }
+.cart-item-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--dark); }
+.cart-item-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+.cart-item-price { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--dark); }
+.cart-remove { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:4px; }
+
+.discount-strip {
+  margin:4px 20px 14px; background:linear-gradient(135deg,#f0ffe0,#e6ffc0);
+  border-radius:16px; padding:14px 16px; border:1.5px solid rgba(100,180,0,0.2);
+  display:flex; align-items:center; gap:12px;
+}
+.discount-icon { font-size:22px; }
+.discount-strip-text { flex:1; }
+.discount-strip-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#3a6600; }
+.discount-strip-sub { font-size:11px; color:#5a8600; margin-top:2px; }
+.discount-val { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:#3a6600; }
+
+.order-summary {
+  margin:0 20px 14px; background:#fff; border-radius:20px;
+  border:1px solid var(--border); padding:18px;
+}
+.summary-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; }
+.summary-label { font-size:14px; color:var(--muted); }
+.summary-val { font-size:14px; font-weight:500; color:var(--dark); }
+.summary-divider { height:1px; background:var(--border); margin:8px 0; }
+.summary-total-label { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--dark); }
+.summary-total-val { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--dark); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+.screen.active > * { animation: fadeIn 0.3s ease both; }
+
+/* ── SCREEN TRANSITIONS ── */
+.screen { animation: none; }
+
+/* ════════════════════════════════
+   SCREEN: PROFILE
+════════════════════════════════ */
+#screen-profile { background: var(--surface); }
+.profile-header {
+  background: var(--dark); padding: 0 20px 32px;
+  border-radius: 0 0 32px 32px; position: relative; overflow: hidden;
+}
+.profile-header-glow {
+  position: absolute; width: 220px; height: 220px;
+  background: var(--lime); border-radius: 50%;
+  filter: blur(80px); opacity: 0.13;
+  top: -60px; right: -50px; pointer-events: none;
+}
+.profile-avatar-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 8px; margin-bottom: 16px;
+}
+.profile-avatar {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--lime), #6fa010);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; margin-bottom: 12px;
+  border: 3px solid rgba(200,241,53,0.35);
+  box-shadow: 0 0 0 6px rgba(200,241,53,0.08);
+}
+.profile-name { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #fff; }
+.profile-email { font-size: 13px; color: rgba(255,255,255,0.42); margin-top: 4px; }
+.profile-badge {
+  margin-top: 10px; background: var(--lime); color: var(--dark);
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 800;
+  border-radius: 100px; padding: 5px 14px; letter-spacing: 0.05em;
+}
+.profile-stats-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; padding: 16px 20px 0;
+}
+.profile-stat {
+  background: #fff; border-radius: 16px; padding: 14px 10px;
+  border: 1px solid var(--border); text-align: center;
+}
+.profile-stat-num { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--dark); }
+.profile-stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.profile-section {
+  background: #fff; border-radius: 20px; border: 1px solid var(--border);
+  margin: 14px 20px 0; overflow: hidden;
+}
+.profile-section-title {
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+  color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 14px 16px 8px;
+}
+.profile-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; border-top: 1px solid var(--border); cursor: pointer;
+  transition: background 0.15s;
+}
+.profile-row:active { background: var(--surface); }
+.profile-row-icon {
+  width: 38px; height: 38px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.profile-row-label { font-size: 14px; font-weight: 500; color: var(--dark); flex: 1; }
+.profile-row-value { font-size: 13px; color: var(--muted); }
+.profile-row-arrow { font-size: 18px; color: rgba(0,0,0,0.2); margin-left: 6px; }
+.goal-bar-track {
+  height: 7px; background: var(--surface2); border-radius: 100px;
+  margin-top: 7px; overflow: hidden;
+}
+.goal-bar-fill {
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--lime), #6fa010);
+  transition: width 0.6s ease;
+}
+.order-hist-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-top: 1px solid var(--border);
+}
+.order-hist-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--surface); display: flex; align-items: center;
+  justify-content: center; font-size: 20px; flex-shrink: 0;
+}
+.order-hist-info { flex: 1; }
+.order-hist-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--dark); }
+.order-hist-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.order-hist-price { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; color: var(--dark); }
+
+/* ── LOGOUT OVERLAY ── */
+.logout-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+  display: none; align-items: flex-end; justify-content: center;
+  z-index: 200; backdrop-filter: blur(6px);
+}
+.logout-overlay.open { display: flex; }
+.logout-sheet {
+  width: 100%; background: #fff; border-radius: 28px 28px 0 0;
+  padding: 28px 24px 52px; text-align: center;
+  animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.logout-icon { font-size: 52px; margin-bottom: 14px; }
+.logout-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--dark); }
+.logout-sub { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.7; }
+.btn-danger {
+  background: #FF4444; color: #fff;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+  border: none; border-radius: 100px; padding: 16px 32px;
+  cursor: pointer; width: 100%; margin-top: 20px;
+  transition: transform 0.1s, background 0.2s;
+}
+.btn-danger:active { transform: scale(0.97); }
+.btn-danger:hover { background: #e03333; }
+
+/* ── CART BADGE ── */
+.nav-cart-wrap { position: relative; display: inline-flex; }
+.cart-badge {
+  position: absolute; top: -5px; right: -6px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #FF4444; color: #fff;
+  font-size: 9px; font-weight: 800; font-family: 'Syne', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff;
+}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="phone-shell">
+
+<!-- ══════════════════════════════════
+     SCREEN: LOGIN
+══════════════════════════════════ -->
+<div class="screen active" id="screen-login" style="background:#0D0D0D;">
+  <div style="position:absolute;width:280px;height:280px;background:#C8F135;border-radius:50%;filter:blur(100px);opacity:0.12;top:-80px;left:-60px;pointer-events:none;"></div>
+  <div style="position:absolute;width:200px;height:200px;background:#7BF196;border-radius:50%;filter:blur(80px);opacity:0.08;top:100px;right:-60px;pointer-events:none;"></div>
+
+  <!-- Art area -->
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px 20px;position:relative;">
+    <!-- Canister SVG -->
+    <svg width="120" height="150" viewBox="0 0 120 150" fill="none" style="margin-bottom:20px;">
+      <rect x="28" y="28" width="64" height="98" rx="14" fill="url(#lg1)"/>
+      <rect x="24" y="20" width="72" height="24" rx="10" fill="#d4ff55"/>
+      <rect x="38" y="8" width="44" height="15" rx="7" fill="#b8df25"/>
+      <rect x="34" y="54" width="52" height="42" rx="8" fill="#0D0D0D" opacity="0.88"/>
+      <text x="60" y="70" text-anchor="middle" font-size="9" fill="#C8F135" font-family="sans-serif" font-weight="800" letter-spacing="2">WHEY</text>
+      <text x="60" y="86" text-anchor="middle" font-size="14" fill="#fff" font-family="sans-serif" font-weight="900">PRO+</text>
+      <text x="60" y="97" text-anchor="middle" font-size="8" fill="#666" font-family="sans-serif">ISOLATE BLEND</text>
+      <rect x="42" y="108" width="36" height="8" rx="4" fill="#C8F135" opacity="0.25"/>
+      <text x="60" y="115" text-anchor="middle" font-size="7" fill="#C8F135" font-family="sans-serif">5 lbs · 2.27 kg</text>
+      <!-- shine -->
+      <rect x="28" y="28" width="18" height="98" rx="14" fill="white" opacity="0.04"/>
+      <defs>
+        <linearGradient id="lg1" x1="28" y1="28" x2="92" y2="126" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#C8F135"/>
+          <stop offset="100%" stop-color="#6fa010"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="login-logo">Protein<span>Vend</span></div>
+    <div class="login-tagline">Fuel your gains — anywhere, anytime.</div>
+  </div>
+
+  <!-- Form -->
+  <div class="login-form-area">
+    <h3 class="syne" style="margin-bottom:20px;font-size:20px;">Sign in</h3>
+    <div class="input-group">
+      <div class="input-label">Email</div>
+      <input class="input-field" type="email" placeholder="alex@example.com" value="alex@example.com"/>
+    </div>
+    <div class="input-group" style="margin-bottom:20px;">
+      <div class="input-label">Password</div>
+      <input class="input-field" type="password" placeholder="••••••••" value="••••••••"/>
+    </div>
+    <button class="btn-primary" onclick="goTo('home')">Sign In</button>
+    <div class="divider"><div class="divider-line"></div><div class="divider-text">or</div><div class="divider-line"></div></div>
+    <button class="social-btn" style="margin-bottom:10px;" onclick="goTo('home')">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2a10.3 10.3 0 0 0-.16-1.84H9v3.48h4.84A4.14 4.14 0 0 1 12.06 13v2.26h2.88A8.78 8.78 0 0 0 17.64 9.2z" fill="#4285F4"/><path d="M9 18a8.6 8.6 0 0 0 5.96-2.18l-2.88-2.24A5.43 5.43 0 0 1 9 14.72a5.38 5.38 0 0 1-5.07-3.72H.96v2.32A9 9 0 0 0 9 18z" fill="#34A853"/><path d="M3.93 11a5.3 5.3 0 0 1 0-3.44V5.24H.96a9 9 0 0 0 0 8.08z" fill="#FBBC05"/><path d="M9 3.58a4.86 4.86 0 0 1 3.44 1.34l2.58-2.58A8.64 8.64 0 0 0 9 0 9 9 0 0 0 .96 5.24l2.97 2.32A5.38 5.38 0 0 1 9 3.58z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+    <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--muted);">
+      No account? <span style="color:var(--dark);font-weight:600;cursor:pointer;" onclick="goTo('home')">Create one free →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: HOME
+══════════════════════════════════ -->
+<div class="screen" id="screen-home">
+  <div class="status-bar dark">
+    <span>9:41</span><span style="font-size:14px;">●●●</span>
+  </div>
+  <div class="scroll-body">
+    <div class="home-header">
+      <div class="home-header-glow"></div>
+      <div class="header-row">
+        <div>
+          <div class="greeting-name">Hey <span>Alex,</span></div>
+          <div class="greeting-sub">Ready to fuel up?</div>
+        </div>
+        <button class="notif-btn" onclick="navTo('profile')" title="Profile" style="overflow:hidden;font-size:22px;padding:0;">🏋️</button>
+      </div>
+      <div class="search-box" onclick="goTo('machine')">
+        <span class="search-box-icon">⌕</span>
+        <span>Search products or machines…</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Machines Near</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--lime-dark);">₹240</div>
+        <div class="stat-label">Saved</div>
+      </div>
+    </div>
+
+    <!-- Featured -->
+    <div class="section-header">
+      <div class="section-title">Featured Products</div>
+      <div class="see-all" onclick="goTo('machine')">See all</div>
+    </div>
+    <div class="feat-scroll">
+      <div class="feat-card" style="background:linear-gradient(135deg,#1a1a1a,#2d3a1a);" onclick="goTo('machine')">
+        <div class="feat-card-accent" style="background:#C8F135;"></div>
+        <div class="feat-card-badge">⚡ New</div>
+        <div style="font-size:28px;margin-bottom:4px;">🥛</div>
+        <div class="feat-card-name">Whey Pro+<br/>Chocolate</div>
+        <div class="feat-card-sub">25g protein · ₹299</div>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#0a1a2a,#0a2a3a);" onclick="goTo('machine')">
+        <div class="feat-card-accent" style="background:#35C8F1;"></div>
+        <div style="font-size:28px;margin-bottom:4px;">🍫</div>
+        <div class="feat-card-name">Protein Bar<br/>Double Choc</div>
+        <div class="feat-card-sub">21g protein · ₹149</div>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#1a0a2a,#2a0a3a);" onclick="goTo('shake')">
+        <div class="feat-card-accent" style="background:#F135C8;"></div>
+        <div class="feat-card-badge">🔥 Hot</div>
+        <div style="font-size:28px;margin-bottom:4px;">🥤</div>
+        <div class="feat-card-name">Build-a-Shake<br/>Custom Blend</div>
+        <div class="feat-card-sub">From ₹199</div>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#1a1400,#2a2000);" onclick="goTo('bundles')">
+        <div class="feat-card-accent" style="background:#F19535;"></div>
+        <div class="feat-card-badge">💰 Save 20%</div>
+        <div style="font-size:28px;margin-bottom:4px;">📦</div>
+        <div class="feat-card-name">Bundle Deal<br/>3+ Items</div>
+        <div class="feat-card-sub">From ₹399</div>
+      </div>
+    </div>
+
+    <!-- Nearby machines -->
+    <div class="section-header">
+      <div class="section-title">Nearby Machines</div>
+      <div class="see-all">Map view</div>
+    </div>
+    <div class="machine-card" onclick="goTo('machine')">
+      <div class="machine-icon" style="background:#f0ffe0;">🏋️</div>
+      <div class="machine-info">
+        <div class="machine-name">GymBox — Koramangala</div>
+        <div class="machine-meta">0.3 km · 14 products · Shake available</div>
+      </div>
+      <div class="machine-status" style="background:#e6ffc0;color:#3a6600;">Open</div>
+    </div>
+    <div class="machine-card" onclick="goTo('machine')">
+      <div class="machine-icon" style="background:#e0f7ff;">🏃</div>
+      <div class="machine-info">
+        <div class="machine-name">Cult Fit — Indiranagar</div>
+        <div class="machine-meta">1.1 km · 9 products</div>
+      </div>
+      <div class="machine-status" style="background:#e6ffc0;color:#3a6600;">Open</div>
+    </div>
+    <div class="machine-card" onclick="goTo('machine')">
+      <div class="machine-icon" style="background:#fff0e0;">💪</div>
+      <div class="machine-info">
+        <div class="machine-name">Gold's Gym — HSR Layout</div>
+        <div class="machine-meta">2.4 km · 18 products · Shake available</div>
+      </div>
+      <div class="machine-status" style="background:#ffe0e0;color:#aa2222;">Busy</div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="navTo('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <div class="nav-label">Home</div>
+      <div class="nav-dot"></div>
+    </div>
+    <div class="nav-item" onclick="navTo('machine')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <div class="nav-label">Vend</div>
+      <div class="nav-dot"></div>
+    </div>
+    <div class="nav-item" onclick="navTo('shake')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l1 6H7L8 2z"/><path d="M7 8c0 8 2 12 5 12s5-4 5-12"/></svg>
+      <div class="nav-label">Shake</div>
+      <div class="nav-dot"></div>
+    </div>
+    <div class="nav-item" onclick="navTo('cart')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <div class="nav-label">Cart</div>
+      <div class="nav-dot"></div>
+    </div>
+    <div class="nav-item" onclick="navTo('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="nav-label">Profile</div>
+      <div class="nav-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: MACHINE / VEND
+══════════════════════════════════ -->
+<div class="screen" id="screen-machine">
+  <div class="status-bar dark">
+    <span>9:41</span><span style="font-size:14px;">●●●</span>
+  </div>
+  <div class="scroll-body">
+    <div class="machine-header">
+      <div style="position:absolute;width:160px;height:160px;background:#C8F135;border-radius:50%;filter:blur(60px);opacity:0.15;top:-40px;right:-20px;pointer-events:none;"></div>
+      <div class="machine-top-row">
+        <button class="back-btn" onclick="goTo('home')">←</button>
+        <div>
+          <div class="machine-hdr-name">GymBox — Koramangala</div>
+          <div class="machine-hdr-meta">🟢 Online · 14 products available</div>
+        </div>
+      </div>
+      <!-- category tabs -->
+      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;" id="cat-tabs">
+        <div class="pill pill-lime cat-tab active-tab" data-cat="all" onclick="filterCat('all',this)" style="cursor:pointer;">All</div>
+        <div class="pill" style="background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;" data-cat="protein" onclick="filterCat('protein',this)">Protein</div>
+        <div class="pill" style="background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;" data-cat="bars" onclick="filterCat('bars',this)">Bars</div>
+        <div class="pill" style="background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;" data-cat="supps" onclick="filterCat('supps',this)">Supps</div>
+        <div class="pill" style="background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;" data-cat="drinks" onclick="filterCat('drinks',this)">Drinks</div>
+      </div>
+    </div>
+
+    <!-- Vending machine visual -->
+    <div class="vend-machine-wrap" style="padding-top:16px;">
+      <div class="vend-machine-visual">
+        <div class="vend-machine-title">VENDING MACHINE — TAP TO SELECT</div>
+        <div class="vend-grid" id="vend-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Selected product panel -->
+      <div class="product-panel" id="product-panel" style="display:none;">
+        <div class="product-panel-header">
+          <div class="product-panel-icon" id="pp-icon">🥛</div>
+          <div class="product-panel-info">
+            <div class="product-panel-name" id="pp-name">Whey Pro+</div>
+            <div class="product-panel-sub" id="pp-sub">Chocolate · 25g protein</div>
+          </div>
+          <div>
+            <div class="product-panel-price" id="pp-price">₹299</div>
+          </div>
+        </div>
+        <div class="macro-row">
+          <div class="macro-chip"><div class="macro-val" id="pp-cal">140</div><div class="macro-label">kcal</div></div>
+          <div class="macro-chip"><div class="macro-val" id="pp-prot">25g</div><div class="macro-label">Protein</div></div>
+          <div class="macro-chip"><div class="macro-val" id="pp-carb">8g</div><div class="macro-label">Carbs</div></div>
+          <div class="macro-chip"><div class="macro-val" id="pp-fat">3g</div><div class="macro-label">Fat</div></div>
+        </div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <div class="qty-num" id="qty-display">1</div>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+          <button class="btn-primary" style="flex:1;" onclick="addToCart()">Add to Cart</button>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="navTo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+    <div class="nav-item active" onclick="navTo('machine')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="nav-label">Vend</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('shake')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l1 6H7L8 2z"/><path d="M7 8c0 8 2 12 5 12s5-4 5-12"/></svg><div class="nav-label">Shake</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('cart')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="nav-label">Cart</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="nav-label">Profile</div><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: BUNDLES
+══════════════════════════════════ -->
+<div class="screen" id="screen-bundles">
+  <div class="status-bar surface"><span>9:41</span><span style="font-size:14px;">●●●</span></div>
+  <div class="scroll-body">
+    <div class="bundle-hero">
+      <div class="bundle-hero-glow"></div>
+      <div class="discount-badge-big">🎉 Bundle & Save</div>
+      <h2 style="color:#fff;margin-bottom:6px;">Buy 3+ items,<br/>unlock discounts.</h2>
+      <div style="font-size:13px;color:rgba(255,255,255,0.45);">More items = bigger savings. Mix & match anything.</div>
+    </div>
+
+    <!-- Discount tiers -->
+    <div style="display:flex;gap:10px;padding:16px 20px 0;">
+      <div style="flex:1;background:#fff;border-radius:16px;padding:14px;border:1px solid var(--border);text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#3a6600;">10%</div>
+        <div style="font-size:11px;color:var(--muted);">3 items</div>
+      </div>
+      <div style="flex:1;background:#fff;border-radius:16px;padding:14px;border:1.5px solid var(--lime);text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#3a6600;">15%</div>
+        <div style="font-size:11px;color:var(--muted);">5 items</div>
+      </div>
+      <div style="flex:1;background:var(--dark);border-radius:16px;padding:14px;text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--lime);">20%</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);">7+ items</div>
+      </div>
+    </div>
+
+    <div class="section-header" style="padding-top:20px;">
+      <div class="section-title">Curated Bundles</div>
+    </div>
+
+    <div class="bundle-card featured">
+      <div class="bundle-card-header">
+        <div>
+          <div class="bundle-name">💪 Starter Pack</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">Best for beginners</div>
+        </div>
+        <div class="bundle-save">Save 15%</div>
+      </div>
+      <div class="bundle-items">
+        <div class="bundle-item-chip">🥛 Whey Pro+</div>
+        <div class="bundle-item-chip">🍫 Protein Bar ×2</div>
+        <div class="bundle-item-chip">💊 BCAA</div>
+        <div class="bundle-item-chip">🥤 Electrolyte</div>
+      </div>
+      <div class="bundle-price-row">
+        <div class="bundle-price-new">₹799</div>
+        <div class="bundle-price-old">₹940</div>
+        <button class="bundle-add-btn" onclick="addBundleToCart()">Add Bundle →</button>
+      </div>
+    </div>
+
+    <div class="bundle-card">
+      <div class="bundle-card-header">
+        <div>
+          <div class="bundle-name">🔥 Bulk Gains</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">For serious lifters</div>
+        </div>
+        <div class="bundle-save">Save 20%</div>
+      </div>
+      <div class="bundle-items">
+        <div class="bundle-item-chip">🥛 Whey Pro+ ×2</div>
+        <div class="bundle-item-chip">🍫 Protein Bar ×3</div>
+        <div class="bundle-item-chip">💊 Creatine</div>
+        <div class="bundle-item-chip">🥜 Peanut Butter Cups ×2</div>
+      </div>
+      <div class="bundle-price-row">
+        <div class="bundle-price-new">₹1,280</div>
+        <div class="bundle-price-old">₹1,600</div>
+        <button class="bundle-add-btn" onclick="addBundleToCart()">Add Bundle →</button>
+      </div>
+    </div>
+
+    <div class="bundle-card">
+      <div class="bundle-card-header">
+        <div>
+          <div class="bundle-name">🌱 Plant Power</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">Vegan friendly</div>
+        </div>
+        <div class="bundle-save">Save 10%</div>
+      </div>
+      <div class="bundle-items">
+        <div class="bundle-item-chip">🌿 Plant Blend</div>
+        <div class="bundle-item-chip">🍓 Fruit Bar ×2</div>
+        <div class="bundle-item-chip">🥤 Green Shot</div>
+      </div>
+      <div class="bundle-price-row">
+        <div class="bundle-price-new">₹580</div>
+        <div class="bundle-price-old">₹645</div>
+        <button class="bundle-add-btn" onclick="addBundleToCart()">Add Bundle →</button>
+      </div>
+    </div>
+
+    <!-- promo -->
+    <div class="promo-banner">
+      <div class="promo-glow"></div>
+      <div class="promo-icon">🎟️</div>
+      <div class="promo-text">
+        <div class="promo-title">Use code FUEL20</div>
+        <div class="promo-sub">Extra 5% off any bundle · Expires tonight</div>
+      </div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="navTo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('machine')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="nav-label">Vend</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('shake')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l1 6H7L8 2z"/><path d="M7 8c0 8 2 12 5 12s5-4 5-12"/></svg><div class="nav-label">Shake</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('cart')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="nav-label">Cart</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="nav-label">Profile</div><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: SHAKE BUILDER
+══════════════════════════════════ -->
+<div class="screen" id="screen-shake">
+  <div class="status-bar surface"><span>9:41</span><span style="font-size:14px;">●●●</span></div>
+  <div class="scroll-body">
+    <div class="shake-header">
+      <div class="shake-hero-glow"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <button class="back-btn" onclick="goTo('home')">←</button>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;">Build-a-Shake</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);">Order ahead · Ready when you arrive</div>
+        </div>
+      </div>
+      <div style="background:rgba(200,241,53,0.1);border:1px solid rgba(200,241,53,0.2);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">⏱️</span>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);">Order now, pick up in ~8 min</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);">Machine at GymBox starts prep on confirm</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding-top:16px;">
+
+    <div class="builder-step">
+      <div class="step-num">1</div>
+      <div class="step-title">Choose your base protein</div>
+      <div class="option-chips" id="step1">
+        <div class="option-chip selected" onclick="selectChip(this,'step1')"><span class="chip-icon">🥛</span>Whey Isolate</div>
+        <div class="option-chip" onclick="selectChip(this,'step1')"><span class="chip-icon">🌿</span>Plant Blend</div>
+        <div class="option-chip" onclick="selectChip(this,'step1')"><span class="chip-icon">🥚</span>Egg White</div>
+        <div class="option-chip" onclick="selectChip(this,'step1')"><span class="chip-icon">🐄</span>Casein</div>
+      </div>
+    </div>
+
+    <div class="builder-step">
+      <div class="step-num">2</div>
+      <div class="step-title">Pick a flavour</div>
+      <div class="option-chips" id="step2">
+        <div class="option-chip selected" onclick="selectChip(this,'step2')"><span class="chip-icon">🍫</span>Chocolate</div>
+        <div class="option-chip" onclick="selectChip(this,'step2')"><span class="chip-icon">🍓</span>Strawberry</div>
+        <div class="option-chip" onclick="selectChip(this,'step2')"><span class="chip-icon">🍌</span>Banana</div>
+        <div class="option-chip" onclick="selectChip(this,'step2')"><span class="chip-icon">🌰</span>Peanut Butter</div>
+        <div class="option-chip" onclick="selectChip(this,'step2')"><span class="chip-icon">🍦</span>Vanilla</div>
+      </div>
+    </div>
+
+    <div class="builder-step">
+      <div class="step-num">3</div>
+      <div class="step-title">Add-ons (optional)</div>
+      <div class="option-chips" id="step3">
+        <div class="option-chip" onclick="toggleChip(this)"><span class="chip-icon">⚡</span>Creatine +₹30</div>
+        <div class="option-chip" onclick="toggleChip(this)"><span class="chip-icon">🔥</span>Fat Burner +₹40</div>
+        <div class="option-chip" onclick="toggleChip(this)"><span class="chip-icon">💊</span>BCAA +₹25</div>
+        <div class="option-chip" onclick="toggleChip(this)"><span class="chip-icon">🍯</span>Honey +₹20</div>
+        <div class="option-chip selected" onclick="toggleChip(this)"><span class="chip-icon">🧊</span>Extra Ice</div>
+      </div>
+    </div>
+
+    <div class="builder-step">
+      <div class="step-num">4</div>
+      <div class="step-title">Size</div>
+      <div class="option-chips" id="step4">
+        <div class="option-chip" onclick="selectChip(this,'step4')">S · 300ml</div>
+        <div class="option-chip selected" onclick="selectChip(this,'step4')">M · 450ml</div>
+        <div class="option-chip" onclick="selectChip(this,'step4')">L · 600ml</div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="shake-summary">
+      <div class="shake-summary-glow"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;">Your Shake</div>
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--lime);">₹254</div>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">Whey Isolate · Chocolate · M · Extra Ice</div>
+      <div class="shake-macro-grid">
+        <div class="shake-macro"><div class="shake-macro-val">310</div><div class="shake-macro-label">kcal</div></div>
+        <div class="shake-macro"><div class="shake-macro-val">40g</div><div class="shake-macro-label">Protein</div></div>
+        <div class="shake-macro"><div class="shake-macro-val">22g</div><div class="shake-macro-label">Carbs</div></div>
+      </div>
+    </div>
+
+    <div style="padding:0 20px 32px;">
+      <button class="btn-primary" onclick="orderShake()">Order Shake — Machine Starts Now 🥤</button>
+      <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px;">The machine at GymBox will begin preparing<br/>your shake immediately upon confirmation.</div>
+    </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="navTo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('machine')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="nav-label">Vend</div><div class="nav-dot"></div></div>
+    <div class="nav-item active" onclick="navTo('shake')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l1 6H7L8 2z"/><path d="M7 8c0 8 2 12 5 12s5-4 5-12"/></svg><div class="nav-label">Shake</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('cart')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="nav-label">Cart</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="nav-label">Profile</div><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: ORDER TRACKING
+══════════════════════════════════ -->
+<div class="screen" id="screen-order">
+  <div class="status-bar dark"><span>9:41</span><span style="font-size:14px;">●●●</span></div>
+  <div class="scroll-body">
+    <div class="order-header">
+      <div class="order-hero-glow"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn" onclick="goTo('home')">←</button>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;">Order Tracking</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);">GymBox · Koramangala</div>
+        </div>
+      </div>
+
+      <!-- Timer -->
+      <div class="timer-wrap" style="padding:0 0 16px;">
+        <div class="timer-ring-outer">
+          <svg class="timer-ring-svg" viewBox="0 0 180 180">
+            <circle class="timer-circle-bg" cx="90" cy="90" r="80"/>
+            <circle class="timer-circle-prog" id="timer-prog" cx="90" cy="90" r="80"/>
+          </svg>
+          <div class="timer-inner">
+            <div class="timer-num" id="timer-display">6:42</div>
+            <div class="timer-label">MINS LEFT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:20px 20px 0;">
+      <div style="background:#fff;border-radius:20px;padding:16px;border:1px solid var(--border);margin-bottom:16px;">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;letter-spacing:0.06em;">ORDER PROGRESS</div>
+        <div class="order-steps">
+          <div class="order-step">
+            <div class="step-dot done">✓</div>
+            <div class="step-info">
+              <div class="step-name">Order Confirmed</div>
+              <div class="step-desc">Payment processed successfully</div>
+              <div class="step-time">9:34 AM</div>
+            </div>
+          </div>
+          <div class="order-step">
+            <div class="step-dot done">✓</div>
+            <div class="step-info">
+              <div class="step-name">Machine Notified</div>
+              <div class="step-desc">GymBox machine received your order</div>
+              <div class="step-time">9:34 AM</div>
+            </div>
+          </div>
+          <div class="order-step">
+            <div class="step-dot active">🥤</div>
+            <div class="step-info">
+              <div class="step-name">Shake Preparing</div>
+              <div class="step-desc">Blending Whey Isolate Chocolate M</div>
+              <div class="step-time" style="color:var(--lime-dark);">In progress…</div>
+            </div>
+          </div>
+          <div class="order-step">
+            <div class="step-dot pending">4</div>
+            <div class="step-info">
+              <div class="step-name">Ready for Collection</div>
+              <div class="step-desc">Scan QR at the machine to dispense</div>
+              <div class="step-time">~9:42 AM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order summary card -->
+      <div style="background:#fff;border-radius:20px;padding:16px;border:1px solid var(--border);margin-bottom:16px;">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:0.06em;">YOUR ORDER</div>
+        <div style="display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:10px;">
+          <span style="font-size:28px;">🥤</span>
+          <div style="flex:1;">
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;">Whey Isolate Shake · M</div>
+            <div style="font-size:12px;color:var(--muted);">Chocolate · Extra Ice · BCAA</div>
+          </div>
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;">₹254</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
+          <span>Order #PV-2847</span>
+          <span>Today 9:34 AM</span>
+        </div>
+      </div>
+
+      <button class="btn-dark" onclick="showReady()">Simulate Ready →</button>
+      <div style="height:24px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: ORDER READY
+══════════════════════════════════ -->
+<div class="screen" id="screen-ready">
+  <div class="status-bar dark"><span>9:41</span><span style="font-size:14px;">●●●</span></div>
+  <div class="scroll-body" style="background:#0D0D0D;">
+    <div style="position:absolute;width:300px;height:300px;background:#C8F135;border-radius:50%;filter:blur(100px);opacity:0.12;top:-60px;left:50%;transform:translateX(-50%);pointer-events:none;"></div>
+
+    <div style="padding:40px 20px 20px;text-align:center;position:relative;">
+      <div style="font-size:72px;margin-bottom:16px;animation:bounce 1s infinite alternate;">🥤</div>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:8px;">Your shake is<br/><span style="color:var(--lime);">ready!</span></div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;">Head to GymBox — Koramangala now.<br/>Scan the QR below to collect.</div>
+    </div>
+
+    <!-- QR code representation -->
+    <div style="margin:0 20px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:24px;text-align:center;">
+      <svg width="160" height="160" viewBox="0 0 160 160" style="margin:0 auto 16px;display:block;">
+        <rect width="160" height="160" rx="12" fill="#fff"/>
+        <!-- QR pattern simulation -->
+        <rect x="12" y="12" width="52" height="52" rx="4" fill="#0D0D0D"/>
+        <rect x="20" y="20" width="36" height="36" rx="2" fill="#fff"/>
+        <rect x="28" y="28" width="20" height="20" fill="#0D0D0D"/>
+        <rect x="96" y="12" width="52" height="52" rx="4" fill="#0D0D0D"/>
+        <rect x="104" y="20" width="36" height="36" rx="2" fill="#fff"/>
+        <rect x="112" y="28" width="20" height="20" fill="#0D0D0D"/>
+        <rect x="12" y="96" width="52" height="52" rx="4" fill="#0D0D0D"/>
+        <rect x="20" y="104" width="36" height="36" rx="2" fill="#fff"/>
+        <rect x="28" y="112" width="20" height="20" fill="#0D0D0D"/>
+        <!-- dots -->
+        <rect x="72" y="12" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="72" y="28" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="72" y="44" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="84" y="12" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="84" y="44" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="72" y="72" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="84" y="72" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="96" y="72" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="108" y="84" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="120" y="72" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="132" y="84" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="72" y="96" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="72" y="120" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="84" y="108" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="96" y="96" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="108" y="120" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="120" y="96" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="132" y="108" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="144" y="96" width="8" height="8" fill="#0D0D0D" rx="1"/>
+        <rect x="144" y="120" width="8" height="8" fill="#0D0D0D" rx="1"/>
+      </svg>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--lime);letter-spacing:0.2em;">7X4K</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:6px;">Scan at machine · Expires in 15 min</div>
+    </div>
+
+    <div style="padding:0 20px 20px;">
+      <div style="background:rgba(200,241,53,0.1);border:1px solid rgba(200,241,53,0.2);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:20px;">
+        <span style="font-size:22px;">⏰</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">Keeps fresh for 20 minutes</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);">Temperature maintained in sealed chamber</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goTo('home')">Done — Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: CART
+══════════════════════════════════ -->
+<div class="screen" id="screen-cart">
+  <div class="status-bar surface"><span>9:41</span><span style="font-size:14px;">●●●</span></div>
+  <div class="scroll-body">
+    <div style="padding:16px 20px 20px;border-bottom:1px solid var(--border);background:#fff;">
+      <h2 style="font-size:24px;">Your Cart 🛒</h2>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px);">GymBox — Koramangala</div>
+    </div>
+
+    <div style="padding-top:14px;" id="cart-items">
+      <div class="cart-item">
+        <div class="cart-item-icon">🥛</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">Whey Pro+ Chocolate</div>
+          <div class="cart-item-sub">25g protein · Qty: 1</div>
+        </div>
+        <div class="cart-item-price">₹299</div>
+        <button class="cart-remove">×</button>
+      </div>
+      <div class="cart-item">
+        <div class="cart-item-icon">🍫</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">Protein Bar Double Choc</div>
+          <div class="cart-item-sub">21g protein · Qty: 2</div>
+        </div>
+        <div class="cart-item-price">₹298</div>
+        <button class="cart-remove">×</button>
+      </div>
+      <div class="cart-item">
+        <div class="cart-item-icon">💊</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">BCAA Watermelon</div>
+          <div class="cart-item-sub">6g BCAA · Qty: 1</div>
+        </div>
+        <div class="cart-item-price">₹149</div>
+        <button class="cart-remove">×</button>
+      </div>
+    </div>
+
+    <!-- Discount strip — 3 items = 10% off -->
+    <div class="discount-strip">
+      <div class="discount-icon">🎉</div>
+      <div class="discount-strip-text">
+        <div class="discount-strip-title">3-item discount applied!</div>
+        <div class="discount-strip-sub">You saved ₹74 with bundle pricing</div>
+      </div>
+      <div class="discount-val">-₹74</div>
+    </div>
+
+    <!-- Upsell -->
+    <div style="margin:0 20px 14px;background:var(--surface);border-radius:16px;padding:14px;border:1px dashed rgba(0,0,0,0.12);">
+      <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:0.06em;">ADD 2 MORE ITEMS → UNLOCK 15% OFF</div>
+      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;">
+        <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid var(--border);min-width:90px;text-align:center;cursor:pointer;" onclick="addToCart()">
+          <div style="font-size:22px;">🥜</div>
+          <div style="font-size:10px;font-weight:700;color:var(--dark);font-family:'Syne',sans-serif;margin-top:4px;">PB Cups</div>
+          <div style="font-size:10px;color:var(--lime-dark);font-weight:700;">₹99</div>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid var(--border);min-width:90px;text-align:center;cursor:pointer;" onclick="addToCart()">
+          <div style="font-size:22px;">🥤</div>
+          <div style="font-size:10px;font-weight:700;color:var(--dark);font-family:'Syne',sans-serif;margin-top:4px;">Electrolyte</div>
+          <div style="font-size:10px;color:var(--lime-dark);font-weight:700;">₹89</div>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid var(--border);min-width:90px;text-align:center;cursor:pointer;" onclick="addToCart()">
+          <div style="font-size:22px;">🌿</div>
+          <div style="font-size:10px;font-weight:700;color:var(--dark);font-family:'Syne',sans-serif;margin-top:4px;">Green Shot</div>
+          <div style="font-size:10px;color:var(--lime-dark);font-weight:700;">₹79</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order summary -->
+    <div class="order-summary">
+      <div class="summary-row">
+        <div class="summary-label">Subtotal (3 items)</div>
+        <div class="summary-val">₹746</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label" style="color:#3a6600;">Bundle Discount (10%)</div>
+        <div class="summary-val" style="color:#3a6600;">−₹74</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Convenience fee</div>
+        <div class="summary-val">₹0</div>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-row">
+        <div class="summary-total-label">Total</div>
+        <div class="summary-total-val">₹672</div>
+      </div>
+    </div>
+
+    <div style="padding:0 20px 32px;">
+      <button class="btn-primary" onclick="goTo('order')" style="margin-bottom:10px;">Place Order → ₹672</button>
+      <button class="btn-ghost" onclick="goTo('machine')" style="width:100%;text-align:center;">Continue Shopping</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="navTo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('machine')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="nav-label">Vend</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('shake')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l1 6H7L8 2z"/><path d="M7 8c0 8 2 12 5 12s5-4 5-12"/></svg><div class="nav-label">Shake</div><div class="nav-dot"></div></div>
+    <div class="nav-item active" onclick="navTo('cart')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="nav-label">Cart</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="nav-label">Profile</div><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN: PROFILE
+══════════════════════════════════ -->
+<div class="screen" id="screen-profile">
+  <div class="status-bar dark"><span>9:41</span><span style="font-size:14px;">●●●</span></div>
+  <div class="scroll-body">
+    <div class="profile-header">
+      <div class="profile-header-glow"></div>
+      <!-- header top row -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:0.04em;">MY PROFILE</div>
+        <button class="notif-btn" onclick="openLogout()" title="Sign Out" style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.25);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff7777" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">🏋️</div>
+        <div class="profile-name">Alex Johnson</div>
+        <div class="profile-email">alex@example.com</div>
+        <div class="profile-badge">⚡ PRO Member</div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="profile-stats-grid">
+      <div class="profile-stat">
+        <div class="profile-stat-num">24</div>
+        <div class="profile-stat-label">Orders</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-num" style="color:var(--lime-dark);">₹480</div>
+        <div class="profile-stat-label">Total Saved</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-num">18</div>
+        <div class="profile-stat-label">Days Active</div>
+      </div>
+    </div>
+
+    <!-- Fitness Goals -->
+    <div class="profile-section">
+      <div class="profile-section-title">Today's Fitness Goals</div>
+      <div style="padding:4px 16px 16px;">
+        <div style="margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:13px;font-weight:500;color:var(--dark);">Daily Protein</div>
+            <div style="font-size:13px;font-weight:700;color:var(--lime-dark);">148g / 180g</div>
+          </div>
+          <div class="goal-bar-track"><div class="goal-bar-fill" style="width:82%;"></div></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:13px;font-weight:500;color:var(--dark);">Calories</div>
+            <div style="font-size:13px;font-weight:700;color:#0090b8;">1,840 / 2,500 kcal</div>
+          </div>
+          <div class="goal-bar-track"><div class="goal-bar-fill" style="width:74%;background:linear-gradient(90deg,#35C8F1,#0090b8);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:13px;font-weight:500;color:var(--dark);">Weekly Sessions</div>
+            <div style="font-size:13px;font-weight:700;color:#c06a00;">4 / 5 sessions</div>
+          </div>
+          <div class="goal-bar-track"><div class="goal-bar-fill" style="width:80%;background:linear-gradient(90deg,#F19535,#c06a00);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="profile-section">
+      <div class="profile-section-title">Recent Orders</div>
+      <div class="order-hist-item" style="border-top:none;">
+        <div class="order-hist-icon">🥤</div>
+        <div class="order-hist-info">
+          <div class="order-hist-name">Whey Isolate Shake · M</div>
+          <div class="order-hist-meta">GymBox · Mar 15 · #PV-2847</div>
+        </div>
+        <div class="order-hist-price">₹254</div>
+      </div>
+      <div class="order-hist-item">
+        <div class="order-hist-icon">🥛</div>
+        <div class="order-hist-info">
+          <div class="order-hist-name">Whey Pro+ Chocolate ×2</div>
+          <div class="order-hist-meta">Cult Fit · Mar 12 · #PV-2819</div>
+        </div>
+        <div class="order-hist-price">₹598</div>
+      </div>
+      <div class="order-hist-item">
+        <div class="order-hist-icon">📦</div>
+        <div class="order-hist-info">
+          <div class="order-hist-name">Starter Pack Bundle</div>
+          <div class="order-hist-meta">GymBox · Mar 9 · #PV-2791</div>
+        </div>
+        <div class="order-hist-price">₹799</div>
+      </div>
+      <div class="order-hist-item">
+        <div class="order-hist-icon">🍫</div>
+        <div class="order-hist-info">
+          <div class="order-hist-name">Protein Bar Double Choc ×3</div>
+          <div class="order-hist-meta">Gold's Gym · Mar 7 · #PV-2773</div>
+        </div>
+        <div class="order-hist-price">₹447</div>
+      </div>
+      <div style="padding:12px 16px;border-top:1px solid var(--border);text-align:center;">
+        <div style="font-size:13px;color:var(--lime-dark);font-weight:600;cursor:pointer;">View all 24 orders →</div>
+      </div>
+    </div>
+
+    <!-- Account Settings -->
+    <div class="profile-section">
+      <div class="profile-section-title">Account</div>
+      <div class="profile-row">
+        <div class="profile-row-icon" style="background:#f0ffe0;">🎯</div>
+        <div class="profile-row-label">Fitness Goal</div>
+        <div class="profile-row-value">Muscle Gain</div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+      <div class="profile-row">
+        <div class="profile-row-icon" style="background:#e0f7ff;">💳</div>
+        <div class="profile-row-label">Payment Methods</div>
+        <div class="profile-row-value">UPI · ****2341</div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+      <div class="profile-row">
+        <div class="profile-row-icon" style="background:#fff0e0;">🔔</div>
+        <div class="profile-row-label">Notifications</div>
+        <div class="profile-row-value">On</div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+      <div class="profile-row">
+        <div class="profile-row-icon" style="background:#f5e6ff;">🏆</div>
+        <div class="profile-row-label">Rewards & Points</div>
+        <div class="profile-row-value">480 pts</div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+      <div class="profile-row">
+        <div class="profile-row-icon" style="background:#e8e8e8;">🔒</div>
+        <div class="profile-row-label">Privacy & Security</div>
+        <div class="profile-row-value"></div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+    </div>
+
+    <!-- Sign out -->
+    <div style="padding:16px 20px 10px;">
+      <button class="btn-danger" onclick="openLogout()">Sign Out</button>
+      <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px;">ProteinVend v2.1.0 · © 2026 All rights reserved</div>
+    </div>
+    <div style="height:24px;"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="navTo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('machine')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="nav-label">Vend</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('shake')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l1 6H7L8 2z"/><path d="M7 8c0 8 2 12 5 12s5-4 5-12"/></svg><div class="nav-label">Shake</div><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="navTo('cart')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="nav-label">Cart</div><div class="nav-dot"></div></div>
+    <div class="nav-item active" onclick="navTo('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="nav-label">Profile</div><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     LOGOUT CONFIRMATION OVERLAY
+══════════════════════════════════ -->
+<div class="logout-overlay" id="logout-overlay" onclick="closeLogout(event)">
+  <div class="logout-sheet" onclick="event.stopPropagation()">
+    <div class="logout-icon">👋</div>
+    <div class="logout-title">Signing out?</div>
+    <div class="logout-sub">You'll need to sign back in to<br/>access your account and orders.</div>
+    <button class="btn-danger" onclick="confirmLogout()">Yes, Sign Out</button>
+    <button class="btn-ghost" onclick="closeLogout()" style="width:100%;margin-top:10px;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+</div><!-- /phone-shell -->
+</div><!-- /app -->
+
+<style>
+@keyframes bounce { from{transform:translateY(0);} to{transform:translateY(-10px);} }
+</style>
+
+<script>
+// ── DATA ──
+const products = [
+  { id:1, icon:'🥛', name:'Whey Pro+', flavor:'Chocolate', price:'₹299', cal:140, prot:'25g', carb:'8g', fat:'3g', cat:'protein', qty:3 },
+  { id:2, icon:'🥛', name:'Whey Isolate', flavor:'Vanilla', price:'₹319', cal:120, prot:'27g', carb:'3g', fat:'2g', cat:'protein', qty:2 },
+  { id:3, icon:'🌿', name:'Plant Blend', flavor:'Strawberry', price:'₹279', cal:130, prot:'22g', carb:'10g', fat:'4g', cat:'protein', qty:1 },
+  { id:4, icon:'🍫', name:'Protein Bar', flavor:'Double Choc', price:'₹149', cal:210, prot:'21g', carb:'22g', fat:'7g', cat:'bars', qty:5 },
+  { id:5, icon:'🍓', name:'Fruit Bar', flavor:'Berry Blast', price:'₹129', cal:180, prot:'15g', carb:'24g', fat:'5g', cat:'bars', qty:4 },
+  { id:6, icon:'🥜', name:'PB Cups', flavor:'Peanut Butter', price:'₹99', cal:160, prot:'8g', carb:'14g', fat:'9g', cat:'bars', qty:0 },
+  { id:7, icon:'💊', name:'BCAA', flavor:'Watermelon', price:'₹149', cal:10, prot:'6g', carb:'0g', fat:'0g', cat:'supps', qty:6 },
+  { id:8, icon:'⚡', name:'Creatine', flavor:'Unflavoured', price:'₹199', cal:0, prot:'0g', carb:'0g', fat:'0g', cat:'supps', qty:3 },
+  { id:9, icon:'🔥', name:'Pre-Workout', flavor:'Mango', price:'₹249', cal:20, prot:'2g', carb:'3g', fat:'0g', cat:'supps', qty:2 },
+  { id:10, icon:'🥤', name:'Electrolyte', flavor:'Lemon', price:'₹89', cal:30, prot:'0g', carb:'7g', fat:'0g', cat:'drinks', qty:8 },
+  { id:11, icon:'🌿', name:'Green Shot', flavor:'Matcha', price:'₹79', cal:25, prot:'1g', carb:'4g', fat:'0g', cat:'drinks', qty:4 },
+  { id:12, icon:'🧊', name:'Cold Brew', flavor:'Coffee', price:'₹119', cal:60, prot:'3g', carb:'8g', fat:'1g', cat:'drinks', qty:0 },
+];
+
+let currentQty = 1;
+let selectedProduct = null;
+let currentCat = 'all';
+
+// ── NAVIGATION ──
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+screenId).classList.add('active');
+  if(screenId === 'machine') renderVendGrid(currentCat);
+  if(screenId === 'order') startTimer();
+}
+
+function navTo(screenId) {
+  goTo(screenId);
+}
+
+// ── VEND GRID ──
+function renderVendGrid(cat) {
+  const grid = document.getElementById('vend-grid');
+  const filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
+  // pad to 12 if less
+  const slots = [...filtered];
+  while(slots.length < 12 && cat === 'all') break;
+  grid.innerHTML = slots.map(p => `
+    <div class="vend-slot ${p.qty===0?'empty':''}" id="slot-${p.id}" onclick="selectProduct(${p.id})">
+      ${p.qty > 0 ? `<div class="vend-slot-qty">${p.qty}</div>` : ''}
+      <div class="vend-slot-icon">${p.icon}</div>
+      <div class="vend-slot-name">${p.name}</div>
+      <div class="vend-slot-price">${p.price}</div>
+      ${p.qty === 0 ? '<div class="vend-slot-out">OUT</div>' : ''}
+    </div>
+  `).join('');
+}
+
+function selectProduct(id) {
+  const p = products.find(x => x.id === id);
+  if(!p || p.qty === 0) return;
+  selectedProduct = p;
+  currentQty = 1;
+  document.querySelectorAll('.vend-slot').forEach(s => s.classList.remove('selected'));
+  const slot = document.getElementById('slot-'+id);
+  if(slot) slot.classList.add('selected');
+  const panel = document.getElementById('product-panel');
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('pp-icon').textContent = p.icon;
+  document.getElementById('pp-name').textContent = p.name;
+  document.getElementById('pp-sub').textContent = p.flavor + ' · ' + p.prot + ' protein';
+  document.getElementById('pp-price').textContent = p.price;
+  document.getElementById('pp-cal').textContent = p.cal;
+  document.getElementById('pp-prot').textContent = p.prot;
+  document.getElementById('pp-carb').textContent = p.carb;
+  document.getElementById('pp-fat').textContent = p.fat;
+  document.getElementById('qty-display').textContent = 1;
+}
+
+function changeQty(delta) {
+  currentQty = Math.max(1, Math.min(5, currentQty + delta));
+  document.getElementById('qty-display').textContent = currentQty;
+}
+
+function addToCart() {
+  if(!selectedProduct) return;
+  showToast(`✅ ${currentQty}× ${selectedProduct.name} added to cart`);
+  setTimeout(() => goTo('cart'), 600);
+}
+
+function addBundleToCart() {
+  showToast('📦 Bundle added to cart!');
+  setTimeout(() => goTo('cart'), 600);
+}
+
+// ── CAT FILTER ──
+function filterCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('#cat-tabs .pill, #cat-tabs [onclick]').forEach(t => {
+    t.className = 'pill';
+    t.style.background = 'rgba(255,255,255,0.1)';
+    t.style.color = '#fff';
+  });
+  el.className = 'pill pill-lime';
+  el.style.background = '';
+  el.style.color = '';
+  renderVendGrid(cat);
+  document.getElementById('product-panel').style.display = 'none';
+  selectedProduct = null;
+}
+
+// ── SHAKE ──
+function selectChip(el, groupId) {
+  document.querySelectorAll('#'+groupId+' .option-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleChip(el) {
+  el.classList.toggle('selected');
+}
+
+function orderShake() {
+  goTo('order');
+}
+
+// ── TIMER ──
+let timerInterval = null;
+let timerSecs = 402; // 6:42
+function startTimer() {
+  if(timerInterval) clearInterval(timerInterval);
+  timerSecs = 402;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timerSecs = Math.max(0, timerSecs - 1);
+    updateTimerDisplay();
+    // update ring
+    const circ = 2 * Math.PI * 80;
+    const prog = document.getElementById('timer-prog');
+    if(prog) {
+      const offset = circ * (1 - timerSecs / 402);
+      prog.style.strokeDashoffset = offset;
+    }
+    if(timerSecs === 0) {
+      clearInterval(timerInterval);
+      setTimeout(showReady, 800);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSecs / 60);
+  const s = timerSecs % 60;
+  const el = document.getElementById('timer-display');
+  if(el) el.textContent = m+':'+(s<10?'0':'')+s;
+}
+
+function showReady() {
+  if(timerInterval) clearInterval(timerInterval);
+  goTo('ready');
+}
+
+// ── PROFILE & LOGOUT ──
+function openLogout() {
+  document.getElementById('logout-overlay').classList.add('open');
+}
+function closeLogout(e) {
+  if (!e || e.target === document.getElementById('logout-overlay')) {
+    document.getElementById('logout-overlay').classList.remove('open');
+  }
+}
+function confirmLogout() {
+  document.getElementById('logout-overlay').classList.remove('open');
+  goTo('login');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  let t = document.getElementById('pv-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'pv-toast';
+    t.style.cssText = 'position:absolute;bottom:100px;left:50%;transform:translateX(-50%);background:#0D0D0D;color:#fff;font-family:Syne,sans-serif;font-size:13px;font-weight:600;padding:10px 20px;border-radius:100px;z-index:999;white-space:nowrap;pointer-events:none;transition:opacity 0.3s;';
+    document.querySelector('.phone-shell').appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._to);
+  t._to = setTimeout(() => { t.style.opacity = '0'; }, 2000);
+}
+
+// ── INIT ──
+renderVendGrid('all');
+</script>
+</body>
+</html>

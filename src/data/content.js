@@ -285,7 +285,8 @@ export const contact = {
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/saigauravp/", icon: "linkedin" },
     { label: "Email Me", href: "mailto:Gowravp147@gmail.com", icon: "mail" },
-    { label: "Download Resume", href: "/Sai_Gowrav_PM_Resume.pdf", icon: "download" },
+    { label: "Preview Resume", href: "/Sai_Gowrav_PM_Resume.pdf", icon: "eye", action: "preview" },
+    { label: "Download Resume", href: "/Sai_Gowrav_PM_Resume.pdf", icon: "download", action: "download" },
   ],
 };
 

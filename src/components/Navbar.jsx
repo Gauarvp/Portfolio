@@ -68,7 +68,7 @@ export default function Navbar() {
             }}
             className="font-bold text-xl tracking-tight text-ink"
           >
-            Sai Gowrav<span className="text-accent">.</span>
+            Sai Gowrav P<span className="text-accent">.</span>
           </a>
 
           <div className="hidden md:flex items-center gap-8">

@@ -2,7 +2,7 @@ export const hero = {
   tag: "Bengaluru · Open to PM Roles",
   headline: ["I don't just", "analyze data.", "I build what's next."],
   accentWord: "what's next.",
-  sub: "I've spent 1.7+ years as a support analyst at Wipro and DXC — but I never stopped at just filing tickets and running reports. I spotted problems worth solving, designed two product tools from scratch, and sat in sprint planning alongside PMs. Now I'm making the switch official.",
+  sub: "I've spent 1.7+ years as a support analyst at Wipro and DXC — but I never stopped at just reviewing and running reports. I spotted problems worth solving, designed two product tools from scratch, and sat in sprint planning alongside PMs. Now I'm making the switch official.",
   cta1: { label: "Read my story", href: "#story" },
   cta2: { label: "Hire me", href: "#contact" },
   stats: [

@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #FAF8F3;
+    color: #1A1814;
+  }
+}
+
+@layer utilities {
+  .text-accent {
+    color: #C4622D;
+  }
+  .text-accent2 {
+    color: #2D6B8A;
+  }
+  .bg-ink {
+    background: #1A1814;
+  }
+  .bg-cream {
+    background: #FAF8F3;
+  }
+  .animate-pulse-dot {
+    animation: pulse-dot 2s infinite;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(76, 175, 80, 0.08);
+  }
+}
+
+::selection {
+  background: #C4622D;
+  color: #FAF8F3;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F3;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4622D;
+  border-radius: 100px;
+}

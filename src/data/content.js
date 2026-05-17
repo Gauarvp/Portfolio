@@ -283,9 +283,9 @@ export const contact = {
   title: ["Interested in", "working together?"],
   desc: "I'm looking for teams that care about building things well — where clear thinking and real experience both matter. Happy to chat.",
   links: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/sai-gowrav-p", icon: "linkedin" },
-    { label: "Email Me", href: "mailto:YOUR_EMAIL@gmail.com", icon: "mail" },
-    { label: "Download Resume", href: "/resume.pdf", icon: "download" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/saigauravp/", icon: "linkedin" },
+    { label: "Email Me", href: "mailto:Gowravp147@gmail.com", icon: "mail" },
+    { label: "Download Resume", href: "/Sai_Gowrav_PM_Resume.pdf", icon: "download" },
   ],
 };
 

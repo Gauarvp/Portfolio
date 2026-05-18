@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import { Lightbulb } from "lucide-react";
 import { projects } from "../data/content";
 import { FadeUp, staggerContainer, staggerItem } from "../hooks/useScrollAnimation";
-import { IconDashboard, IconBot, IconSmartphone } from "./Icons";
+import { IconDashboard, IconBot, IconSmartphone, IconCpu } from "./Icons";
 
 const projectIconMap = {
   dashboard: IconDashboard,
   bot: IconBot,
   smartphone: IconSmartphone,
+  cpu: IconCpu,
 };
 
 export default function Projects() {

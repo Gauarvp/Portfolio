@@ -125,12 +125,12 @@ export const experience = {
       metrics: [
         { value: "28%", label: "Bottleneck surfaced" },
         { value: "6 hrs", label: "Manual work saved / month" },
-        { value: "4", label: "KPIs defined & tracked" },
-        { value: "2", label: "Products designed" },
+        { value: "14%", label: "Ad-hoc requests reduced" },
+        { value: "4", label: "KPIs defined" },
       ],
       bullets: [
-        "Defined <strong>4 KPIs</strong> for a critical client workflow, surfaced a 28% process bottleneck, and authored the feature change request that cut manual effort by ~6 hrs/month — work that grew into the Performance Dashboard project.",
-        "Spotted recurring first-contact failures in support data, <strong>pitched the RCA AI Agent concept</strong> to product leadership, and co-owned the spec through build and launch.",
+        "Defined <strong>4 KPIs</strong> for a critical client workflow, surfaced a 28% process bottleneck, and authored the feature change request that cut manual effort by ~6 hrs/month.",
+        "Automated the most common ad-hoc data requests into <strong>self-serve reports</strong> — request volume dropped 14%, freeing the team to focus on higher-priority work.",
         "Embedded with PMs during <strong>sprint planning, roadmap reviews, and stakeholder syncs</strong> — contributing to PRD drafts, writing user stories, and evaluating release trade-offs.",
       ],
       tags: ["Product Specs", "KPI Definition", "Sprint Planning", "PRD Writing", "User Stories", "Stakeholder Work"],
@@ -174,7 +174,7 @@ export const experience = {
 export const projects = {
   label: "Projects",
   title: ["Things I've", "designed & built."],
-  desc: "Both of these came directly from problems I saw in my analyst role at Wipro. I didn't wait for someone to assign them — I identified the gaps and made the case to build.",
+  desc: "All three came directly from problems I saw in my analyst role at Wipro. I didn't wait for someone to assign them — I identified the gaps and made the case to build.",
   items: [
     {
       id: "rca-agent",
@@ -223,6 +223,30 @@ export const projects = {
       tags: ["Dashboard Design", "KPI Tracking", "AI Integration", "Stakeholder Tool", "Product Strategy"],
       icon: "dashboard",
       accent: "accent",
+    },
+    {
+      id: "workload-balancer",
+      tag: "AI Product Design",
+      title: "AI Workload Balancer & Capacity Planner",
+      tagline: "Replacing gut-feel ticket assignments with data-driven routing — so the right engineer gets the right ticket, every time.",
+      problem: "Ticket distribution was completely manual and uneven. High-complexity cases kept landing on the same senior engineers repeatedly, SLA breaches were piling up, and nobody had visibility into who was actually available or quietly burning out.",
+      solution: "I defined a 'balance ratio' metric, designed an ML-based complexity scoring engine that predicts handling time per ticket using issue type, historical patterns, and sentiment — and built a manager-facing capacity view that auto-recommends optimal assignments in real time.",
+      pmAngle: "I started with the metric — 'balance ratio' — and worked backwards from it. Once I had a way to measure fairness, I could define what good looked like and design the system around that target. I also scoped two distinct user journeys: the manager needing live workload visibility, and the engineer needing clarity on their queue.",
+      features: [
+        "ML complexity scoring engine predicting ticket handling time from issue type, history, and sentiment",
+        "Real-time capacity tracking with predictive load forecasting for optimal routing",
+        "Auto-recommended assignments replacing manual gut-feel distribution",
+        "AI-generated early warning alerts surfacing burnout risk before it escalates",
+      ],
+      impact: "Replaced gut-feel assignments with data-driven routing across 3 teams — SLA breaches dropped and burnout risk became visible before it escalated.",
+      metrics: [
+        { value: "3", label: "Teams rolled out" },
+        { value: "↓", label: "SLA breaches" },
+        { value: "AI", label: "Burnout alerts" },
+      ],
+      tags: ["AI Product", "ML Design", "Capacity Planning", "SLA Management", "Product Metrics"],
+      icon: "cpu",
+      accent: "accent2",
     },
   ],
 };

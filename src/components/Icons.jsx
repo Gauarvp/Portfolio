@@ -93,6 +93,18 @@ export function IconSmartphone({ size = 24, className = "" }) {
   );
 }
 
+export function IconCpu({ size = 24, className = "" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`${shared} ${className}`}>
+      <rect x="6" y="6" width="12" height="12" rx="2" />
+      <path d="M9 6V3" /><path d="M12 6V3" /><path d="M15 6V3" />
+      <path d="M9 21v-3" /><path d="M12 21v-3" /><path d="M15 21v-3" />
+      <path d="M6 9H3" /><path d="M6 12H3" /><path d="M6 15H3" />
+      <path d="M21 9h-3" /><path d="M21 12h-3" /><path d="M21 15h-3" />
+    </svg>
+  );
+}
+
 export function IconCloud({ size = 24, className = "" }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`${shared} ${className}`}>

@@ -1,1 +1,146 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <clipPath id="circ">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="100" fill="#EDEAE5"/>
+
+  <g clip-path="url(#circ)">
+
+    <!-- ── SUIT ──────────────────────────────────────────── -->
+    <!-- Broad left shoulder / jacket -->
+    <path d="M-15 210 L-15 140 C18 118 50 108 76 104 L84 140 L48 210Z" fill="#111118"/>
+    <!-- Broad right shoulder / jacket -->
+    <path d="M215 210 L215 140 C182 118 150 108 124 104 L116 140 L152 210Z" fill="#111118"/>
+    <!-- Jacket centre chest -->
+    <path d="M84 140 L88 170 L112 170 L116 140 C108 124 100 117 100 117 C100 117 92 124 84 140Z" fill="#111118"/>
+    <!-- Left lapel inner face -->
+    <path d="M76 104 L69 126 L84 140 L89 128Z" fill="#1A1A28"/>
+    <!-- Right lapel inner face -->
+    <path d="M124 104 L131 126 L116 140 L111 128Z" fill="#1A1A28"/>
+
+    <!-- White shirt strip -->
+    <path d="M88 113 L88 210 L112 210 L112 113 Q100 108 88 113Z" fill="#F7F7F9"/>
+
+    <!-- Left collar -->
+    <path d="M88 113 L73 134 L100 120Z" fill="#F7F7F9"/>
+    <!-- Right collar -->
+    <path d="M112 113 L127 134 L100 120Z" fill="#F7F7F9"/>
+
+    <!-- ── TIE ────────────────────────────────────────────── -->
+    <!-- Tie body -->
+    <path d="M96 112 L100 106 L104 112 L101.5 156 L98.5 156Z" fill="#F97316"/>
+    <!-- Tie point -->
+    <path d="M98.5 156 L101.5 156 L100 165Z" fill="#C55810"/>
+    <!-- Tie knot -->
+    <path d="M96 112 L100 106 L104 112 L102.5 121 L97.5 121Z" fill="#E06812"/>
+
+    <!-- ── NECK ───────────────────────────────────────────── -->
+    <path d="M88 100 Q88 120 100 122 Q112 120 112 100 L108 95 L92 95Z" fill="#F5C5A0"/>
+
+    <!-- ── EARS ───────────────────────────────────────────── -->
+    <ellipse cx="58"  cy="84" rx="9.5" ry="11.5" fill="#F0B890"/>
+    <ellipse cx="142" cy="84" rx="9.5" ry="11.5" fill="#F0B890"/>
+    <ellipse cx="58"  cy="84" rx="5.5" ry="7"    fill="#E4A478"/>
+    <ellipse cx="142" cy="84" rx="5.5" ry="7"    fill="#E4A478"/>
+
+    <!-- ── HEAD / FACE ────────────────────────────────────── -->
+    <!-- Slightly angular jaw for sharpness -->
+    <path d="
+      M62 74
+      Q60 94 62 108
+      Q66 122 76 130
+      Q86 138 100 139
+      Q114 138 124 130
+      Q134 122 138 108
+      Q140 94 138 74
+      Q134 44 100 42
+      Q66 44 62 74Z
+    " fill="#F5C5A0"/>
+
+    <!-- Jaw shadow for definition -->
+    <path d="M66 108 Q68 122 100 134 Q132 122 134 108" stroke="#E0A070" stroke-width="2" fill="none" opacity="0.3"/>
+
+    <!-- ── CURLY HAIR ─────────────────────────────────────── -->
+    <!-- Side hair -->
+    <ellipse cx="60"  cy="68" rx="13" ry="24" fill="#1A0E05"/>
+    <ellipse cx="140" cy="68" rx="13" ry="24" fill="#1A0E05"/>
+
+    <!-- Hair base back-of-head -->
+    <ellipse cx="100" cy="42" rx="42" ry="24" fill="#1A0E05"/>
+
+    <!-- Curls — overlapping bumpy circles -->
+    <circle cx="65"  cy="46" r="16" fill="#1A0E05"/>
+    <circle cx="80"  cy="35" r="19" fill="#1A0E05"/>
+    <circle cx="100" cy="30" r="22" fill="#1A0E05"/>
+    <circle cx="120" cy="35" r="19" fill="#1A0E05"/>
+    <circle cx="135" cy="46" r="16" fill="#1A0E05"/>
+    <circle cx="72"  cy="27" r="13" fill="#1A0E05"/>
+    <circle cx="100" cy="22" r="15" fill="#1A0E05"/>
+    <circle cx="128" cy="27" r="13" fill="#1A0E05"/>
+    <circle cx="88"  cy="19" r="11" fill="#1A0E05"/>
+    <circle cx="112" cy="19" r="11" fill="#1A0E05"/>
+
+    <!-- Hair highlight sheen -->
+    <path d="M80 32 Q100 24 120 32" stroke="#2E1A08" stroke-width="4" fill="none" opacity="0.40"/>
+
+    <!-- Hairline (skin peek at forehead) -->
+    <path d="M66 60 Q100 50 134 60 Q128 52 100 48 Q72 52 66 60Z" fill="#F5C5A0"/>
+
+    <!-- ── EYEBROWS (thick, sharp, Indian) ───────────────── -->
+    <path d="M70 67 Q80 61 91 65"  stroke="#140A02" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path d="M109 65 Q120 61 130 67" stroke="#140A02" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+
+    <!-- ── EYES ──────────────────────────────────────────── -->
+    <!-- Whites -->
+    <ellipse cx="81"  cy="78" rx="11"   ry="7.5" fill="white"/>
+    <ellipse cx="119" cy="78" rx="11"   ry="7.5" fill="white"/>
+    <!-- Upper lash line -->
+    <path d="M70 74 Q81 69 92 74"   stroke="#140A02" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.75"/>
+    <path d="M108 74 Q119 69 130 74" stroke="#140A02" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.75"/>
+    <!-- Iris (dark brown) -->
+    <circle cx="81"  cy="78" r="6.5" fill="#2A1200"/>
+    <circle cx="119" cy="78" r="6.5" fill="#2A1200"/>
+    <!-- Pupil -->
+    <circle cx="81"  cy="78" r="4"   fill="#080200"/>
+    <circle cx="119" cy="78" r="4"   fill="#080200"/>
+    <!-- Catchlight -->
+    <circle cx="84"  cy="75" r="2.2" fill="white" opacity="0.9"/>
+    <circle cx="122" cy="75" r="2.2" fill="white" opacity="0.9"/>
+
+    <!-- ── NOSE ──────────────────────────────────────────── -->
+    <path d="M97 85 Q93 95 95 101 Q97.5 106 100 106 Q102.5 106 105 101 Q107 95 103 85"
+          fill="#E4A070" opacity="0.5"/>
+    <ellipse cx="95.5"  cy="102" rx="4.5" ry="2.5" fill="#CC8050" opacity="0.45"/>
+    <ellipse cx="104.5" cy="102" rx="4.5" ry="2.5" fill="#CC8050" opacity="0.45"/>
+
+    <!-- ── LIGHT BEARD ────────────────────────────────────── -->
+    <!-- Moustache -->
+    <path d="M88 106 Q100 113 112 106 Q107 111 100 112 Q93 111 88 106Z"
+          fill="#AC8C68" opacity="0.86"/>
+    <!-- Chin / jaw beard body -->
+    <path d="
+      M80 104
+      Q76 116 79 126
+      Q84 136 100 137
+      Q116 136 121 126
+      Q124 116 120 104
+      Q110 112 100 113
+      Q90 112 80 104Z
+    " fill="#AC8C68" opacity="0.80"/>
+    <!-- Subtle cheek stubble left -->
+    <path d="M63 96 Q61 108 64 116 Q67 111 71 106" fill="#C4A878" opacity="0.25"/>
+    <!-- Subtle cheek stubble right -->
+    <path d="M137 96 Q139 108 136 116 Q133 111 129 106" fill="#C4A878" opacity="0.25"/>
+
+    <!-- ── MOUTH (confident subtle smile) ───────────────── -->
+    <path d="M91 113 Q100 121 109 113" stroke="#A86C3A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  </g>
+
+  <!-- Outer ring -->
+  <circle cx="100" cy="100" r="98" fill="none" stroke="#CEC7BF" stroke-width="2.5"/>
+</svg>
